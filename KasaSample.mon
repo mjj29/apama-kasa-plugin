@@ -1,0 +1,28 @@
+package kasa.sample;
+
+monitor KasaSample
+{
+	action onload()
+	{
+		monitor.subscribe(kasa.Kasa.CHANNEL);
+/*		on kasa.Response(requestId=kasa.Kasa.discover()) as resp {
+			kasa.Device dev;
+			for dev in <sequence<kasa.Device> > resp.data {
+				on kasa.Response(requestId=dev.togglePowerState()) {
+					print "powered status";
+				}
+			}
+		}*/
+
+		on kasa.Response(requestId=kasa.Kasa.device("officelight")) as resp {
+			on kasa.Response(requestId=(<kasa.Device> resp.data).togglePowerState()) {
+				print "powered status";
+			}
+		}
+	}
+
+	action onunload()
+	{
+		kasa.Kasa.shutdown();
+	}
+}

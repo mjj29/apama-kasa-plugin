@@ -1,0 +1,10 @@
+correlator:
+   initialization:
+      list:
+         - ${PARENT_DIR}/Kasa.mon
+         - ${PARENT_DIR}/KasaSample.mon
+
+eplPlugins:
+   KasaPlugin:
+      pythonFile: "${PARENT_DIR}/kasa.py"
+      class: KasaPluginClass

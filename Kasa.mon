@@ -1,0 +1,64 @@
+package kasa;
+
+event Response
+{
+	integer requestId;
+	any data;
+}
+
+event Device
+{
+	import "KasaPlugin" as plugin;
+	constant string CHANNEL := "kasa.Kasa.channel";
+	string id;
+	string address;
+	string model;
+	string deviceType;
+	boolean powerState;
+	dictionary<string, any> sysinfo;
+	dictionary<string, any> hwinfo;
+
+	action powerOn() returns integer
+	{
+		integer requestId := integer.incrementCounter(CHANNEL);
+		plugin.devicePower(address, true, requestId, CHANNEL);
+		return requestId;
+	}
+	action powerOff() returns integer
+	{
+		integer requestId := integer.incrementCounter(CHANNEL);
+		plugin.devicePower(address, false, requestId, CHANNEL);
+		return requestId;
+	}
+	action togglePowerState() returns integer
+	{
+		integer requestId := integer.incrementCounter(CHANNEL);
+		plugin.devicePower(address, not powerState, requestId, CHANNEL);
+		return requestId;
+	}
+}
+
+event Kasa
+{
+	import "KasaPlugin" as plugin;
+	constant string CHANNEL := "kasa.Kasa.channel";
+	static action discover() returns integer
+	{
+		sequence<kasa.Device> seq; // needed to create this type for the plugin
+		integer requestId := integer.incrementCounter(CHANNEL);
+		log "Calling plugin";
+		plugin.discoverDevices(requestId, CHANNEL);
+		log "Plugin returned";
+		return requestId;
+	}
+	static action device(string address) returns integer
+	{
+		integer requestId := integer.incrementCounter(CHANNEL);
+		plugin.createDeviceObject(address, requestId, CHANNEL);
+		return requestId;
+	}
+	static action shutdown()
+	{
+		plugin.shutdown();
+	}
+}
