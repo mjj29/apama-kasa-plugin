@@ -44,7 +44,7 @@ If you already know the address of the device you can look it up by address or h
 
 ## Documentation
 
-ApamaDoc documentation can be found in the doc sub directory.
+ApamaDoc documentation can be found in the [doc](https://mjj29.github.io/apama-kasa-plugin/docs/) sub directory.
 
 ## Licence
 
