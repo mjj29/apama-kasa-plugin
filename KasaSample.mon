@@ -15,9 +15,13 @@ monitor KasaSample
 		}*/
 
 		on kasa.Response(requestId=kasa.Kasa.device("officelight")) as resp {
-			on kasa.Response(requestId=(<kasa.Device> resp.data).togglePowerState()) {
-				print "powered status";
+			print resp.data.valueToString();
+			on kasa.Response(requestId=(<kasa.Device> resp.data).update()) {
+				print resp.data.valueToString();
 			}
+//			on kasa.Response(requestId=(<kasa.Device> resp.data).togglePowerState()) {
+//				print "powered status";
+//			}
 		}
 	}
 

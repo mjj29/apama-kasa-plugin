@@ -42,6 +42,10 @@ If you already know the address of the device you can look it up by address or h
 		// power toggle has no response data
 	}
 
+## Documentation
+
+ApamaDoc documentation can be found in the doc sub directory.
+
 ## Licence
 
 The Apama EPL Kasa Plug-in is licensed under the Apache 2.0 license.

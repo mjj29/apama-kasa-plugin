@@ -1,62 +1,210 @@
 package kasa;
 
+/**
+ * Response event from asynchronous Kasa methods.
+ *
+ * Contains a request id matching the request id returned from the action and the return value of the method.
+ * Should be listened for like this:
+<code>
+	monitor.subscribe(kasa.Kasa.CHANNEL);
+	on kasa.Response(requestId=kasa.Kasa.discover()) as response {
+	}
+</code>
+ */
 event Response
 {
+	/** The request id from the request. */
 	integer requestId;
-	any data;
+	/** The return value of the request. Could be any type, could be empty. */
+	wildcard any data;
 }
 
+/**
+ * Represents a SmartDevice.
+ *
+ * Most methods on this event are asynchronous and return Response events once complete.
+ *
+ * These response contain a request id matching the request id returned from the action and the return value of the method. 
+ * They should be listened for like this:
+<code>
+	monitor.subscribe(kasa.Kasa.CHANNEL);
+	on kasa.Response(requestId=kasa.Kasa.discover()) as response {
+	}
+</code>
+ */
 event Device
 {
+	/** @private */
 	import "KasaPlugin" as plugin;
+	/** The channel which Response events will be sent to. */
 	constant string CHANNEL := "kasa.Kasa.channel";
+	/** This device is a Plug-type. */
+	constant string TYPE_PLUG := "DeviceType.Plug";
+	/** This device is a Bulb-type. */
+	constant string TYPE_BULB := "DeviceType.Bulb";
+	/** This device is a Power-strip-type. */
+	constant string TYPE_STRIP := "DeviceType.Strip";
+	/** This device is a Dimmer-type. */
+	constant string TYPE_DIMMER := "DeviceType.Dimmer";
+	/** This device type is unknown. */
+	constant string TYPE_UNKNOWN := "DeviceType.Unknown";
+	/** A unique ID of the device (typically this is the MAC address). */
 	string id;
+	/** The IP address of the device. */
 	string address;
+	/** The model name of the device. */
 	string model;
+	/** The device type of the device.
+	 * Will be one of TYPE_PLUG, TYPE_BULB, TYPE_STRIP, TYPE_DIMMER or TYPE_UNKNOWN.
+	 */
 	string deviceType;
+	/** Whether the device is on. */
 	boolean powerState;
+	/** Arbitrary system info from the device. */
 	dictionary<string, any> sysinfo;
+	/** Arbitrary device info from the device. */
 	dictionary<string, any> hwinfo;
 
+	/**
+	 * Turn the device on.
+	 *
+	 * If it's already on, nothing will happen.
+	 *
+	 * Sends a Response event once the power state has changed. That response has no payload.
+	 *
+	 * @returns The requestId with which the Response will be returned.
+	 */
 	action powerOn() returns integer
 	{
 		integer requestId := integer.incrementCounter(CHANNEL);
 		plugin.devicePower(address, true, requestId, CHANNEL);
+		on kasa.Response(requestId=requestId) { powerState := true; }
 		return requestId;
 	}
+	/**
+	 * Turn the device off.
+	 *
+	 * If it's already off, nothing will happen.
+	 *
+	 * Sends a Response event once the power state has changed. That response has no payload.
+	 *
+	 * @returns The requestId with which the Response will be returned.
+	 */
 	action powerOff() returns integer
 	{
 		integer requestId := integer.incrementCounter(CHANNEL);
 		plugin.devicePower(address, false, requestId, CHANNEL);
+		on kasa.Response(requestId=requestId) { powerState := false; }
 		return requestId;
 	}
+	/**
+	 * Toggle the current power state
+	 *
+	 * If it's on, the device will be turned off.
+	 * If it's off, the device will be turned on.
+	 *
+	 * Sends a Response event once the power state has changed. That response has no payload.
+	 *
+	 * @returns The requestId with which the Response will be returned.
+	 */
 	action togglePowerState() returns integer
 	{
 		integer requestId := integer.incrementCounter(CHANNEL);
 		plugin.devicePower(address, not powerState, requestId, CHANNEL);
+		on kasa.Response(requestId=requestId) { powerState := not powerState; }
+		return requestId;
+	}
+	/**
+	 * Refresh the data of this device.
+	 *
+	 * Sends a Response event once data has been retrieved. At that point the data in this Device event will be up to date.
+	 *
+	 * @returns The requestId with which the Response will be returned.
+	 */
+	action update() returns integer
+	{
+		integer requestId := integer.incrementCounter(CHANNEL);
+		monitor.subscribe(CHANNEL);
+		plugin.update(address, requestId, CHANNEL);
+		on kasa.Response(requestId=requestId) as resp 
+		{
+			try {
+				Device dev := <Device> resp.data; 
+				id := dev.id;
+				address := dev.address;
+				model := dev.model;
+				deviceType := dev.deviceType;
+				powerState := dev.powerState;
+				sysinfo := dev.sysinfo;
+				hwinfo := dev.hwinfo;
+				monitor.unsubscribe(CHANNEL);
+			} catch(com.apama.exceptions.Exception e) {
+				log "Error while updating device data for "+address at ERROR;
+			}
+		}
 		return requestId;
 	}
 }
 
+/**
+ * Holds static actions for interacting with Kasa devices.
+ *
+ * Most methods on this event are asynchronous and return Response events once complete.
+ *
+ * These response contain a request id matching the request id returned from the action and the return value of the method. 
+ * They should be listened for like this:
+<code>
+	monitor.subscribe(kasa.Kasa.CHANNEL);
+	on kasa.Response(requestId=kasa.Kasa.discover()) as response {
+	}
+</code>
+ */
 event Kasa
 {
+	/** @private */
 	import "KasaPlugin" as plugin;
+
+	/** The channel which Response events will be sent to. */
 	constant string CHANNEL := "kasa.Kasa.channel";
+
+	/**
+	 * Find all devices on the network.
+	 *
+	 * Sends a Response event once the power state has changed. That response contains
+	 * a sequence of kasa.Device events.
+	 *
+	 * @returns The requestId with which the Response will be returned.
+	 * @see kasa.Response
+	 * @see kasa.Device
+	 */
 	static action discover() returns integer
 	{
 		sequence<kasa.Device> seq; // needed to create this type for the plugin
 		integer requestId := integer.incrementCounter(CHANNEL);
-		log "Calling plugin";
 		plugin.discoverDevices(requestId, CHANNEL);
-		log "Plugin returned";
 		return requestId;
 	}
+	/**
+	 * Find a device with a specific address.
+	 *
+	 * Sends a Response event once the power state has changed. That response contains
+	 * a kasa.Device event.
+	 *
+	 * @returns The requestId with which the Response will be returned.
+	 * @see kasa.Response
+	 * @see kasa.Device
+	 */
 	static action device(string address) returns integer
 	{
 		integer requestId := integer.incrementCounter(CHANNEL);
 		plugin.createDeviceObject(address, requestId, CHANNEL);
 		return requestId;
 	}
+	/**
+	 * Call this action once you are finished using the Kasa plug-in.
+	 *
+	 * For example from your onunload action.
+	 */
 	static action shutdown()
 	{
 		plugin.shutdown();

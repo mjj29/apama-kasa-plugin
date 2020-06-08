@@ -3,27 +3,34 @@ from kasa import Discover
 import asyncio, threading, queue
 
 class Job(object):
+	"""
+		Jobs to be executed asynchronously
+		@param fn a functor to execute
+	"""
 	def __init__(self, fn):
 		self.fn = fn
 
 def iothread(plugin):
-	plugin.getLogger().info("iothread")
+	"""
+		Background thread to execute async jobs on.
+	"""
+	plugin.getLogger().debug("Starting background IO thread for asynchronous jobs")
 	while plugin.running:
 		try:
 			job = plugin.queue.get(timeout=1.0)
-			plugin.getLogger().info("running job")
 			job.fn()
-			plugin.getLogger().info("job done")
 		except queue.Empty:
 			pass
 
 	plugin.getLogger().info("iothread done")
 
 class KasaPluginClass(EPLPluginBase):
-
+	"""
+		The Python EPL plugin for managing Kasa devices
+	"""
 	def __init__(self, init):
 		super(KasaPluginClass, self).__init__(init)
-		self.getLogger().info("KasaPluginClass.__init__")
+		self.getLogger().info("Starting Kasa plug-in")
 		self.running = True
 		self.devices = {}
 		self.queue = queue.SimpleQueue()
@@ -44,18 +51,23 @@ class KasaPluginClass(EPLPluginBase):
 		})
 
 	def _sendResponseEvent(self, channel, eventType, body):
-		self.getLogger().info("KasaPluginClass.sendResponseEvent")
 		Correlator.sendTo(channel, Event(eventType, body))
 
 	@EPLAction("action<>")
 	def shutdown(self):
-		self.getLogger().info("KasaPluginClass.shutdown")
+		"""
+			Plug-in function to shutdown the background thread.
+		"""
+		self.getLogger().debug(f"Shutting down Kasa plug-in")
 		self.running = False
 		self.thread.join()
 
 	@EPLAction("action<integer, string>")
 	def discoverDevices(self, requestId, channel):
-		self.getLogger().info("KasaPluginClass.discoverDevices")
+		"""
+			Discover all devices on the network and send a Response event containing all of the devices.
+		"""
+		self.getLogger().debug(f"Discovering devices")
 		self.queue.put(Job(
 			lambda: self._sendResponseEvent(channel, "kasa.Response", {
 				"requestId":requestId,
@@ -64,7 +76,25 @@ class KasaPluginClass(EPLPluginBase):
 		))
 
 	@EPLAction("action<string, integer, string>")
+	def update(self, address, requestId, channel):
+		"""
+			Look up a device with a given address.
+		"""
+		self.getLogger().debug(f"Looking for device with address {address}")
+		self.queue.put(Job(
+			lambda: self._sendResponseEvent(channel, "kasa.Response", {
+				"requestId":requestId,
+				"data":Any("kasa.Device", self._createDeviceEvent(address, self.devices[address])),
+			})
+		))
+
+
+	@EPLAction("action<string, integer, string>")
 	def createDeviceObject(self, address, requestId, channel):
+		"""
+			Look up a device with a given address.
+		"""
+		self.getLogger().debug(f"Looking for device with address {address}")
 		self.queue.put(Job(
 			lambda: self._sendResponseEvent(channel, "kasa.Response", {
 				"requestId":requestId,
@@ -74,6 +104,10 @@ class KasaPluginClass(EPLPluginBase):
 
 	@EPLAction("action<string, boolean, integer, string>")
 	def devicePower(self, address, state, requestId, channel):
+		"""
+			Turn the device on or off.
+		"""
+		self.getLogger().debug(f"Turning {'on' if state else 'off'} device with address {address}")
 		self.queue.put(Job(
 			lambda: self._sendResponseEvent(channel, "kasa.Response", {
 				"requestId":requestId,

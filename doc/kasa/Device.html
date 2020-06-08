@@ -1,0 +1,329 @@
+<HTML><!-- saved from url=(0014)about:internet -->
+
+
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>Device</TITLE>
+<META NAME="keywords" CONTENT="Device&nbsp;event">
+<LINK REL="stylesheet" TYPE="text/css" HREF="stylesheet.css" TITLE="Style">
+<SCRIPT type="text/javascript">function windowTitle()
+          {
+          parent.document.title="Device";
+          }
+          </SCRIPT>
+<NOSCRIPT></NOSCRIPT>
+</HEAD>
+<BODY BGCOLOR="white" onload="windowTitle();">
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2"><A target="_top" HREF="../index.html?kasa/Device.html"><B>FRAMES</B></A>  &nbsp;
+
+            &nbsp;<A target="_top" HREF="Device.html"><B>NO FRAMES</B></A>  &nbsp;
+            &nbsp;<SCRIPT type="text/javascript"></SCRIPT>
+<NOSCRIPT>
+<A HREF="../alltypes-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+</FONT></TD>
+</TR>
+<TR>
+<TD COLSPAN="2" BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+<TR ALIGN="center" VALIGN="top">
+<TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1"><A HREF="../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;
+              </TD><TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1"><A HREF="..//kasa/package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A></TD><TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1"><A HREF="../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;
+              </TD><TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1"><A HREF="../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT>&nbsp;
+                </A></TD><TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1" WIDTH="100%" ALIGN="RIGHT"><FONT CLASS="NavBarFont1"><B>Kasa EPL plug-in</B></FONT></TD>
+</TR>
+</TABLE>
+</TD><TD ALIGN="right" VALIGN="top" ROWSPAN="3"><EM></EM></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">SUMMARY:&nbsp;IMPORT&nbsp;|&nbsp;<A HREF="#constant_summary">CONSTANT</A>&nbsp;|&nbsp;<A HREF="#member_summary">MEMBER</A>&nbsp;|&nbsp;<A HREF="#action_summary">ACTION</A></FONT></TD><TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">DETAIL:&nbsp;IMPORT&nbsp;|&nbsp;<A HREF="#constant_detail">CONSTANT</A>&nbsp;|&nbsp;<A HREF="#member_detail">MEMBER</A>&nbsp;|&nbsp;<A HREF="#action_detail">ACTION</A></FONT></TD>
+</TR>
+</TABLE>
+<HR>
+<H2>
+<FONT SIZE="-1">kasa</FONT>
+<BR>Event Device</H2>
+<HR>Represents a SmartDevice.<br>
+<br> Most methods on this event are asynchronous and return Response events once complete.<br>
+<br> These response contain a request id matching the request id returned from the action and the return value of the method. They should be listened for like this: <pre><br>	monitor.subscribe(kasa.Kasa.CHANNEL);<br>	on kasa.Response(requestId=kasa.Kasa.discover()) as response {<br>	}<br></pre><DL>
+<DT>
+<B>Listens:</B>
+</DT>
+<DD>
+<A HREF="../kasa/Response.html" title="type in kasa">kasa.Response</A>&nbsp;-&nbsp;</DD>
+</DL>
+<HR>
+<A NAME="constant_summary"></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2"><B>Constant summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1"><CODE>&nbsp;constant string</CODE></FONT></TD><TD><CODE><B><A HREF="Device.html#CHANNEL">CHANNEL</A> := "kasa.Kasa.channel"</B></CODE>
+<br>
+<br>The channel which Response events will be sent to.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1"><CODE>&nbsp;constant string</CODE></FONT></TD><TD><CODE><B><A HREF="Device.html#TYPE_BULB">TYPE_BULB</A> := "DeviceType.Bulb"</B></CODE>
+<br>
+<br>This device is a Bulb-type.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1"><CODE>&nbsp;constant string</CODE></FONT></TD><TD><CODE><B><A HREF="Device.html#TYPE_DIMMER">TYPE_DIMMER</A> := "DeviceType.Dimmer"</B></CODE>
+<br>
+<br>This device is a Dimmer-type.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1"><CODE>&nbsp;constant string</CODE></FONT></TD><TD><CODE><B><A HREF="Device.html#TYPE_PLUG">TYPE_PLUG</A> := "DeviceType.Plug"</B></CODE>
+<br>
+<br>This device is a Plug-type.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1"><CODE>&nbsp;constant string</CODE></FONT></TD><TD><CODE><B><A HREF="Device.html#TYPE_STRIP">TYPE_STRIP</A> := "DeviceType.Strip"</B></CODE>
+<br>
+<br>This device is a Power-strip-type.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1"><CODE>&nbsp;constant string</CODE></FONT></TD><TD><CODE><B><A HREF="Device.html#TYPE_UNKNOWN">TYPE_UNKNOWN</A> := "DeviceType.Unknown"</B></CODE>
+<br>
+<br>This device type is unknown.</TD>
+</TR>
+</TABLE>&nbsp;<A NAME="member_summary"></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2"><B>Member summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1"><CODE>&nbsp;string</CODE></FONT></TD><TD><CODE><B><A HREF="Device.html#id">id</A></B></CODE>
+<br>
+<br>A unique ID of the device (typically this is the MAC address).</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1"><CODE>&nbsp;string</CODE></FONT></TD><TD><CODE><B><A HREF="Device.html#address">address</A></B></CODE>
+<br>
+<br>The IP address of the device.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1"><CODE>&nbsp;string</CODE></FONT></TD><TD><CODE><B><A HREF="Device.html#model">model</A></B></CODE>
+<br>
+<br>The model name of the device.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1"><CODE>&nbsp;string</CODE></FONT></TD><TD><CODE><B><A HREF="Device.html#deviceType">deviceType</A></B></CODE>
+<br>
+<br>The device type of the device. Will be one of TYPE_PLUG, TYPE_BULB, TYPE_STRIP, TYPE_DIMMER or TYPE_UNKNOWN.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1"><CODE>&nbsp;boolean</CODE></FONT></TD><TD><CODE><B><A HREF="Device.html#powerState">powerState</A></B></CODE>
+<br>
+<br>Whether the device is on.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1"><CODE>&nbsp;dictionary&lt;string,&nbsp;any&gt;</CODE></FONT></TD><TD><CODE><B><A HREF="Device.html#sysinfo">sysinfo</A></B></CODE>
+<br>
+<br>Arbitrary system info from the device.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1"><CODE>&nbsp;dictionary&lt;string,&nbsp;any&gt;</CODE></FONT></TD><TD><CODE><B><A HREF="Device.html#hwinfo">hwinfo</A></B></CODE>
+<br>
+<br>Arbitrary device info from the device.</TD>
+</TR>
+</TABLE>&nbsp;<A NAME="action_summary"></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2"><B>Action summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1"><CODE>&nbsp;integer</CODE></FONT></TD><TD><CODE></CODE><CODE><B><A HREF="Device.html#powerOff()">powerOff</A></B>()</CODE>
+<br>
+<br>Turn the device off.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1"><CODE>&nbsp;integer</CODE></FONT></TD><TD><CODE></CODE><CODE><B><A HREF="Device.html#powerOn()">powerOn</A></B>()</CODE>
+<br>
+<br>Turn the device on.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1"><CODE>&nbsp;integer</CODE></FONT></TD><TD><CODE></CODE><CODE><B><A HREF="Device.html#togglePowerState()">togglePowerState</A></B>()</CODE>
+<br>
+<br>Toggle the current power state</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1"><CODE>&nbsp;integer</CODE></FONT></TD><TD><CODE></CODE><CODE><B><A HREF="Device.html#update()">update</A></B>()</CODE>
+<br>
+<br>Refresh the data of this device.</TD>
+</TR>
+</TABLE>&nbsp;<A NAME="constant_detail"></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2"><B>Constant detail</B></FONT></TH>
+</TR>
+</TABLE>
+<A NAME="CHANNEL"></A>
+<H3>CHANNEL</H3>
+<PRE>constant string&nbsp;<B>CHANNEL := "kasa.Kasa.channel"</B>
+</PRE>The channel which Response events will be sent to.<HR>
+<A NAME="TYPE_BULB"></A>
+<H3>TYPE_BULB</H3>
+<PRE>constant string&nbsp;<B>TYPE_BULB := "DeviceType.Bulb"</B>
+</PRE>This device is a Bulb-type.<HR>
+<A NAME="TYPE_DIMMER"></A>
+<H3>TYPE_DIMMER</H3>
+<PRE>constant string&nbsp;<B>TYPE_DIMMER := "DeviceType.Dimmer"</B>
+</PRE>This device is a Dimmer-type.<HR>
+<A NAME="TYPE_PLUG"></A>
+<H3>TYPE_PLUG</H3>
+<PRE>constant string&nbsp;<B>TYPE_PLUG := "DeviceType.Plug"</B>
+</PRE>This device is a Plug-type.<HR>
+<A NAME="TYPE_STRIP"></A>
+<H3>TYPE_STRIP</H3>
+<PRE>constant string&nbsp;<B>TYPE_STRIP := "DeviceType.Strip"</B>
+</PRE>This device is a Power-strip-type.<HR>
+<A NAME="TYPE_UNKNOWN"></A>
+<H3>TYPE_UNKNOWN</H3>
+<PRE>constant string&nbsp;<B>TYPE_UNKNOWN := "DeviceType.Unknown"</B>
+</PRE>This device type is unknown.<HR>
+<A NAME="member_detail"></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2"><B>Member detail</B></FONT></TH>
+</TR>
+</TABLE>
+<A NAME="address"></A>
+<H3>address</H3>
+<PRE>string&nbsp;<B>address</B>
+</PRE>The IP address of the device.<HR>
+<A NAME="deviceType"></A>
+<H3>deviceType</H3>
+<PRE>string&nbsp;<B>deviceType</B>
+</PRE>The device type of the device. Will be one of TYPE_PLUG, TYPE_BULB, TYPE_STRIP, TYPE_DIMMER or TYPE_UNKNOWN.<HR>
+<A NAME="hwinfo"></A>
+<H3>hwinfo</H3>
+<PRE>dictionary&lt;string,&nbsp;any&gt;&nbsp;<B>hwinfo</B>
+</PRE>Arbitrary device info from the device.<HR>
+<A NAME="id"></A>
+<H3>id</H3>
+<PRE>string&nbsp;<B>id</B>
+</PRE>A unique ID of the device (typically this is the MAC address).<HR>
+<A NAME="model"></A>
+<H3>model</H3>
+<PRE>string&nbsp;<B>model</B>
+</PRE>The model name of the device.<HR>
+<A NAME="powerState"></A>
+<H3>powerState</H3>
+<PRE>boolean&nbsp;<B>powerState</B>
+</PRE>Whether the device is on.<HR>
+<A NAME="sysinfo"></A>
+<H3>sysinfo</H3>
+<PRE>dictionary&lt;string,&nbsp;any&gt;&nbsp;<B>sysinfo</B>
+</PRE>Arbitrary system info from the device.<HR>
+<A NAME="action_detail"></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2"><B>Action detail</B></FONT></TH>
+</TR>
+</TABLE>
+<A NAME="powerOff()"></A>
+<H3>powerOff</H3>
+<PRE>integer&nbsp;<B>powerOff</B>()</PRE>Turn the device off.<br>
+<br> If it's already off, nothing will happen.<br>
+<br> Sends a Response event once the power state has changed. That response has no payload.<DL>
+<DT>
+<B>Returns:</B>
+</DT>
+<DD>The requestId with which the Response will be returned.</DD>
+</DL>
+<DL>
+<DT>
+<B>Listens:</B>
+</DT>
+<DD>
+<A HREF="../kasa/Response.html" title="type in kasa">kasa.Response</A>&nbsp;-&nbsp;</DD>
+</DL>
+<HR>
+<A NAME="powerOn()"></A>
+<H3>powerOn</H3>
+<PRE>integer&nbsp;<B>powerOn</B>()</PRE>Turn the device on.<br>
+<br> If it's already on, nothing will happen.<br>
+<br> Sends a Response event once the power state has changed. That response has no payload.<DL>
+<DT>
+<B>Returns:</B>
+</DT>
+<DD>The requestId with which the Response will be returned.</DD>
+</DL>
+<DL>
+<DT>
+<B>Listens:</B>
+</DT>
+<DD>
+<A HREF="../kasa/Response.html" title="type in kasa">kasa.Response</A>&nbsp;-&nbsp;</DD>
+</DL>
+<HR>
+<A NAME="togglePowerState()"></A>
+<H3>togglePowerState</H3>
+<PRE>integer&nbsp;<B>togglePowerState</B>()</PRE>Toggle the current power state<br>
+<br> If it's on, the device will be turned off. If it's off, the device will be turned on.<br>
+<br> Sends a Response event once the power state has changed. That response has no payload.<DL>
+<DT>
+<B>Returns:</B>
+</DT>
+<DD>The requestId with which the Response will be returned.</DD>
+</DL>
+<DL>
+<DT>
+<B>Listens:</B>
+</DT>
+<DD>
+<A HREF="../kasa/Response.html" title="type in kasa">kasa.Response</A>&nbsp;-&nbsp;</DD>
+</DL>
+<HR>
+<A NAME="update()"></A>
+<H3>update</H3>
+<PRE>integer&nbsp;<B>update</B>()</PRE>Refresh the data of this device.<br>
+<br> Sends a Response event once data has been retrieved. At that point the data in this Device event will be up to date.<DL>
+<DT>
+<B>Returns:</B>
+</DT>
+<DD>The requestId with which the Response will be returned.</DD>
+</DL>
+<DL>
+<DT>
+<B>Listens:</B>
+</DT>
+<DD>
+<A HREF="../kasa/Response.html" title="type in kasa">kasa.Response</A>&nbsp;-&nbsp;</DD>
+</DL>
+<HR>
+<HR>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2"><A target="_top" HREF="../index.html?kasa/Device.html"><B>FRAMES</B></A>  &nbsp;
+
+            &nbsp;<A target="_top" HREF="Device.html"><B>NO FRAMES</B></A>  &nbsp;
+            &nbsp;<SCRIPT type="text/javascript"></SCRIPT>
+<NOSCRIPT>
+<A HREF="../alltypes-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+</FONT></TD>
+</TR>
+<TR>
+<TD COLSPAN="2" BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+<TR ALIGN="center" VALIGN="top">
+<TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1"><A HREF="../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;
+              </TD><TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1"><A HREF="..//kasa/package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A></TD><TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1"><A HREF="../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;
+              </TD><TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1"><A HREF="../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT>&nbsp;
+                </A></TD><TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1" WIDTH="100%" ALIGN="RIGHT"><FONT CLASS="NavBarFont1"><B>Kasa EPL plug-in</B></FONT></TD>
+</TR>
+</TABLE>
+</TD><TD ALIGN="right" VALIGN="top" ROWSPAN="3"><EM></EM></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">SUMMARY:&nbsp;IMPORT&nbsp;|&nbsp;<A HREF="#constant_summary">CONSTANT</A>&nbsp;|&nbsp;<A HREF="#member_summary">MEMBER</A>&nbsp;|&nbsp;<A HREF="#action_summary">ACTION</A></FONT></TD><TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">DETAIL:&nbsp;IMPORT&nbsp;|&nbsp;<A HREF="#constant_detail">CONSTANT</A>&nbsp;|&nbsp;<A HREF="#member_detail">MEMBER</A>&nbsp;|&nbsp;<A HREF="#action_detail">ACTION</A></FONT></TD>
+</TR>
+</TABLE>
+<HR>
+</BODY>
+</HTML>
