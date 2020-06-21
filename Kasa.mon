@@ -144,6 +144,130 @@ event Device
 		}
 		return requestId;
 	}
+
+
+	action setColorTemp(integer kelvin, integer transitionMs) returns integer
+	{
+		if deviceType != TYPE_BULB {
+			throw com.apama.exceptions.Exception("This device is not a bulb", "kasaException");
+		}
+		if 1 != <integer> sysinfo.getOr("is_variable_color_temp", 0) {
+			throw com.apama.exceptions.Exception("Device does not support variable color temp", "kasaException");
+		}
+		integer requestId := integer.incrementCounter(CHANNEL);
+		plugin.setColorTemp(address, requestId, CHANNEL, kelvin, transitionMs);
+		return requestId;
+	}
+
+	action setBrightness(integer brightnessPercent, integer transitionMs) returns integer
+	{
+		if deviceType != TYPE_BULB {
+			throw com.apama.exceptions.Exception("This device is not a bulb", "kasaException");
+		}
+		if 1 != <integer> sysinfo.getOr("is_dimmable", 0) {
+			throw com.apama.exceptions.Exception("Device is not dimmable", "kasaException");
+		}
+		integer requestId := integer.incrementCounter(CHANNEL);
+		plugin.setBrightness(address, requestId, CHANNEL, brightnessPercent, transitionMs);
+		return requestId;
+	}
+
+	action getBrightness() returns integer
+	{
+		dictionary<any, any> light_state := <dictionary<any, any> > sysinfo.getOr("light_state", new dictionary<any, any>);
+		if not light_state.hasKey("brightness") {
+			throw com.apama.exceptions.Exception("Device does not support brightness", "kasaException");
+		}
+		return <integer> light_state["brightness"];
+	}
+
+	action getColorTemp() returns integer
+	{
+		dictionary<any, any> light_state := <dictionary<any, any> > sysinfo.getOr("light_state", new dictionary<any, any>);
+		if not light_state.hasKey("color_temp") {
+			throw com.apama.exceptions.Exception("Device does not support color temperature", "kasaException");
+		}
+		return <integer> light_state["brightness"];
+	}
+
+	action setHSV(integer hue, integer saturation, integer value, integer transitionMs) returns integer
+	{
+		if deviceType != TYPE_BULB {
+			throw com.apama.exceptions.Exception("This device is not a bulb", "kasaException");
+		}
+		if 1 != <integer> sysinfo.getOr("is_color", 0) {
+			throw com.apama.exceptions.Exception("Device does not support variable colors", "kasaException");
+		}
+		integer requestId := integer.incrementCounter(CHANNEL);
+		plugin.setHSV(address, requestId, CHANNEL, hue, saturation, value, transitionMs);
+		return requestId;
+	}
+
+	action getHue() returns integer
+	{
+		dictionary<any, any> light_state := <dictionary<any, any> > sysinfo.getOr("light_state", new dictionary<any, any>);
+		if not light_state.hasKey("hue") {
+			throw com.apama.exceptions.Exception("Device does not support color", "kasaException");
+		}
+		return <integer> light_state["hue"];
+	}
+
+	action getSaturation() returns integer
+	{
+		dictionary<any, any> light_state := <dictionary<any, any> > sysinfo.getOr("light_state", new dictionary<any, any>);
+		if not light_state.hasKey("saturation") {
+			throw com.apama.exceptions.Exception("Device does not support color", "kasaException");
+		}
+		return <integer> light_state["saturation"];
+	}
+
+	action getValue() returns integer
+	{
+		dictionary<any, any> light_state := <dictionary<any, any> > sysinfo.getOr("light_state", new dictionary<any, any>);
+		if not light_state.hasKey("value") {
+			throw com.apama.exceptions.Exception("Device does not support color", "kasaException");
+		}
+		return <integer> light_state["value"];
+	}
+
+	action numChildren() returns integer
+	{
+		return <integer> sysinfo.getOr("child_num", 0);
+	}
+
+	action getChildAlias(integer child) returns string
+	{
+		sequence<any> children := <sequence<any> > sysinfo.getOr("children", new sequence<any>);
+		if child >= children.size() {
+			throw com.apama.exceptions.Exception("Child out of range", "kasaException");
+		}
+		return <string> (<dictionary<any, any> > children[child])["alias"];
+	}
+
+
+	action getChildPowerState(integer child) returns boolean
+	{
+		sequence<any> children := <sequence<any> > sysinfo.getOr("children", new sequence<any>);
+		if child >= children.size() {
+			throw com.apama.exceptions.Exception("Child out of range", "kasaException");
+		}
+		return 0 != <integer> (<dictionary<any, any> > children[child])["state"];
+	}
+
+	action setChildPowerState(integer child, boolean enabled) returns integer
+	{
+		if deviceType != TYPE_STRIP {
+			throw com.apama.exceptions.Exception("This device is not a strip", "kasaException");
+		}
+		if child >= numChildren() {
+			throw com.apama.exceptions.Exception("Child out of range", "kasaException");
+		}
+		integer requestId := integer.incrementCounter(CHANNEL);
+		plugin.setChildPowerState(address, requestId, CHANNEL, child, enabled);
+		return requestId;
+	}
+
+
 }
 
 /**

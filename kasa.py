@@ -115,5 +115,55 @@ class KasaPluginClass(EPLPluginBase):
 			})
 		))
 
+	@EPLAction("action<string, integer, string, integer, integer>")
+	def setColorTemp(self, address, requestId, channel, kelvin, ms):
+		"""
+			Set the color temp on the device.
+		"""
+		self.getLogger().debug(f"Setting color temp to {kelvin}K on device with address {address}")
+		self.queue.put(Job(
+			lambda: self._sendResponseEvent(channel, "kasa.Response", {
+				"requestId":requestId,
+				"data":asyncio.run(self.devices[address].set_light_state({"color_temp":kelvin}))
+			})
+		))
 
+	@EPLAction("action<string, integer, string, integer, integer>")
+	def setBrightness(self, address, requestId, channel, brightness, ms):
+		"""
+			Set the brightness on the device.
+		"""
+		self.getLogger().debug(f"Setting brightness to {brightness}% on device with address {address}")
+		self.queue.put(Job(
+			lambda: self._sendResponseEvent(channel, "kasa.Response", {
+				"requestId":requestId,
+				"data":asyncio.run(self.devices[address].set_light_state({"brightness":brightness}))
+			})
+		))
+
+	@EPLAction("action<string, integer, string, integer, integer, integer, integer>")
+	def setHSV(self, address, requestId, channel, hue, saturation, value, ms):
+		"""
+			Set the color on the device.
+		"""
+		self.getLogger().debug(f"Setting color to {hue},{saturation},{value} on device with address {address}")
+		self.queue.put(Job(
+			lambda: self._sendResponseEvent(channel, "kasa.Response", {
+				"requestId":requestId,
+				"data":asyncio.run(self.devices[address].set_light_state({"hue":hue, "saturation":saturation, "value":value, "color_temp":0}))
+			})
+		))
+
+	@EPLAction("action<string, integer, string, integer, boolean>")
+	def setChildPowerState(self, address, requestId, channel, child, state):
+		"""
+			Set the power state on a child
+		"""
+		self.getLogger().debug(f"Setting power state on {child} to {state} on device with address {address}")
+		self.queue.put(Job(
+			lambda: self._sendResponseEvent(channel, "kasa.Response", {
+				"requestId":requestId,
+				"data":asyncio.run(self.devices[address].children[child].turn_on() if state else self.devices[address].children[child].turn_off())
+			})
+		))
 
